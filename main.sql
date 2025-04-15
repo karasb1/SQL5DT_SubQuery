@@ -53,19 +53,18 @@ create table Wards (
 );
 
 insert into Departments (Building, Name) values
-(1, 'Cardiology'),
+(1, 'Gastroenterology'),
 (1, 'Neurology'),
 (2, 'Oncology'),
 (2, 'Gynecology'),
 (3, 'Pediatrics'),
-(3, 'Dermatology'),
+(3, 'General Surgery'),
 (4, 'Ophthalmology'),
-(4, 'Otolaryngology'),
-(5, 'Urology'),
-(5, 'Orthopedics');
+(5, 'Cardiology'),
+(5, 'Microbiology');
 insert into Doctors (Name, Surname, Salary, Premium) values
 ('Anthony', 'Davis', 1000, 100),
-('Jane', 'Doe', 1200, 200),
+('Joshua', 'Bell', 1200, 200),
 ('Jack', 'Smith', 1500, 300),
 ('Jill', 'Smith', 2000, 400),
 ('James', 'Johnson', 2500, 500),
@@ -88,26 +87,15 @@ insert into Sponsors (Name) values
 ('Jenny Johnson');
 
 insert into Wards (Name, Places, DepartmentId) values
-('Cardiology 1', 10, 1),
-('Cardiology 2', 10, 1),
-('Neurology 1', 10, 2),
-('Neurology 2', 10, 2),
-('Oncology 1', 10, 3),
-('Oncology 2', 10, 3),
-('Gynecology 1', 10, 4),
-('Gynecology 2', 10, 4),
-('Pediatrics 1', 10, 5),
-('Pediatrics 2', 10, 5),
-('Dermatology 1', 10, 6),
-('Dermatology 2', 10, 6),
-('Ophthalmology 1', 10, 7),
-('Ophthalmology 2', 10, 7),
-('Otolaryngology 1', 10, 8),
-('Otolaryngology 2', 10, 8),
-('Urology 1', 10, 9),
-('Urology 2', 10, 9),
-('Orthopedics 1', 10, 10),
-('Orthopedics 2', 10, 10);
+('Cardiology', 20, 1),
+('Neurology', 30, 2),
+('Oncology', 40, 3),
+('Microbiology', 25, 4),
+('Pediatrics', 25, 5),
+('Dermatology', 40, 6),
+('Ophthalmology', 10, 7),
+('Otolaryngology', 10, 8),
+('Urology', 12, 9);
 
 insert into Donations (Amount, DepartmentId, SponsorId) values
 (1000, 1, 1),
@@ -123,7 +111,10 @@ insert into DoctorExaminations (StartTime, EndTime, DoctorId, ExaminationId, War
 ('12:00', '14:00', 3, 3, 3),
 ('14:00', '16:00', 4, 4, 4),
 ('16:00', '18:00', 5, 5, 5),
-('08:00', '10:00', 6, 6, 6);
+('08:00', '10:00', 6, 6, 6),
+('10:00', '12:00', 1, 1, 7),
+('12:00', '14:00', 2, 2, 8),
+('14:00', '16:00', 3, 3, 9);
 
 
 select Name
@@ -143,9 +134,9 @@ select Name
 from Wards
 where Places > (select avg(Places) from Wards where DepartmentId = (select Id from Departments where Name = 'Microbiology'));
 
-select Name
+select Name, Surname
 from Doctors
-where Salary + Premium - 100 > (select Salary from Doctors where Name = 'Anthony' and Surname = 'Davis');
+where Salary + Premium + 100 > (select Salary from Doctors where Name = 'Anthony' and Surname = 'Davis');
 
 select Name
 from Departments
@@ -158,3 +149,6 @@ where Id not in (select SponsorId from Donations where DepartmentId in (select I
 select Surname
 from Doctors
 where Id in (select DoctorId from DoctorExaminations where StartTime between '12:00' and '15:00');
+
+
+drop database Hospital;
